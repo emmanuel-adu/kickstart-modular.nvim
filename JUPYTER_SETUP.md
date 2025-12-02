@@ -17,13 +17,15 @@ pip install jupyter-console  # For better REPL experience
 
 ### 2. Terminal Requirements
 
-For inline image rendering, you need a terminal that supports images:
+For inline image rendering, you need a terminal that supports the Kitty graphics protocol:
 
-**Recommended terminals:**
-- **Kitty** (best support) - `brew install --cask kitty`
-- **iTerm2** with imgcat
+**Fully Supported Terminals:**
+- **Ghostty** ✅ (you're using this - perfect!)
+- **Kitty** - `brew install --cask kitty`
 - **WezTerm**
-- **Alacritty** (with sixel support)
+- **iTerm2** with imgcat
+
+**Note:** Ghostty implements the Kitty graphics protocol, so inline images will work perfectly with your current terminal setup!
 
 If using macOS Terminal or other terminals, images will open in external viewers instead.
 

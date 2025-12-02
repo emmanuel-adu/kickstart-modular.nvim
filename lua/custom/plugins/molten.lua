@@ -61,7 +61,7 @@ return {
   {
     '3rd/image.nvim',
     opts = {
-      backend = 'kitty',
+      backend = 'kitty', -- Works with Kitty, Ghostty, WezTerm (Kitty graphics protocol)
       integrations = {
         markdown = {
           enabled = true,
