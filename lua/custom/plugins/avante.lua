@@ -1,17 +1,28 @@
--- Avante.nvim - Claude AI integration (Cursor-like experience)
--- Requires: ANTHROPIC_API_KEY environment variable
+-- Avante.nvim - Multi-provider AI integration (Cursor-like experience)
+-- Supports: Claude (Anthropic), OpenAI, Azure, Gemini, and more
+-- API Keys: Set AVANTE_ANTHROPIC_API_KEY and/or AVANTE_OPENAI_API_KEY
+-- Or use: ANTHROPIC_API_KEY, OPENAI_API_KEY (legacy)
 return {
   'yetone/avante.nvim',
   event = 'VeryLazy',
   lazy = false,
   version = false,
   opts = {
-    provider = 'claude',
+    provider = 'claude', -- Default provider: 'claude' or 'openai'
     auto_suggestions_provider = 'claude',
     providers = {
       claude = {
         endpoint = 'https://api.anthropic.com',
         model = 'claude-sonnet-4-20250514',
+        ['local'] = false,
+        extra_request_body = {
+          max_tokens = 4096,
+          temperature = 0,
+        },
+      },
+      openai = {
+        endpoint = 'https://api.openai.com/v1',
+        model = 'gpt-4o',
         ['local'] = false,
         extra_request_body = {
           max_tokens = 4096,
@@ -117,5 +128,6 @@ return {
     vim.keymap.set('n', '<leader>ar', '<cmd>AvanteRefresh<cr>', { desc = '[A]vante [R]efresh' })
     vim.keymap.set('v', '<leader>ae', '<cmd>AvanteAsk<cr>', { desc = '[A]vante [E]dit Selection' })
     vim.keymap.set('n', '<leader>ac', '<cmd>AvanteClear<cr>', { desc = '[A]vante [C]lear' })
+    vim.keymap.set('n', '<leader>as', '<cmd>AvanteSwitchProvider<cr>', { desc = '[A]vante [S]witch Provider' })
   end,
 }
