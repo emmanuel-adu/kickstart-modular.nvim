@@ -214,23 +214,13 @@ return {
         rust_analyzer = {}, -- Rust language server
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {}, -- TypeScript language server (removed in favor of typescript-tools.nvim)
-        --
+        -- Note: TypeScript uses typescript-tools.nvim plugin (configured below) instead of tsserver
         lua_ls = {
-          -- cmd = { ... },
-          -- filetypes = { ... },
-          -- capabilities = {},
           settings = {
             Lua = {
               completion = {
                 callSnippet = 'Replace',
               },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
             },
           },
         },
@@ -250,14 +240,27 @@ return {
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
       local ensure_installed = {
-        'stylua', -- Used to format Lua code
+        -- Language servers
         'typescript-language-server', -- TypeScript language server
         'clangd', -- C/C++ language server
         'gopls', -- Go language server
         'pyright', -- Python language server
         'rust-analyzer', -- Rust language server
         'lua-language-server', -- Lua language server
+        -- Formatters
+        'stylua', -- Lua formatter
+        'black', -- Python formatter
+        'isort', -- Python import formatter
+        'prettier', -- JS/TS/JSON/YAML/Markdown formatter
+        'goimports', -- Go import formatter
+        'rustfmt', -- Rust formatter
+        -- Linters
         'markdownlint', -- Markdown linter
+        'ruff', -- Python linter
+        'mypy', -- Python type checker
+        'golangci-lint', -- Go linter
+        'eslint', -- JS/TS linter
+        'shellcheck', -- Shell script linter
       }
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

@@ -20,12 +20,12 @@ return {
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
         },
         opts = {},
       },
@@ -50,6 +50,9 @@ return {
         },
         completion = {
           completeopt = 'menu,menuone,noinsert',
+        },
+        experimental = {
+          ghost_text = true,
         },
         mapping = cmp.mapping.preset.insert {
           -- Select the [n]ext item
@@ -89,9 +92,6 @@ return {
               luasnip.jump(-1)
             end
           end, { 'i', 's' }),
-
-          -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
-          --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         },
         sources = {
           { name = 'nvim_lsp' },
@@ -102,10 +102,10 @@ return {
         },
       }
 
-      -- Set configuration for specific filetype.
+      -- Git commit completion
       cmp.setup.filetype('gitcommit', {
         sources = cmp.config.sources({
-          { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
+          { name = 'git' },
         }, {
           { name = 'buffer' },
         }),
