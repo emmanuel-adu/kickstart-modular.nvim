@@ -84,6 +84,9 @@ I hope you enjoy your Neovim journey,
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
+-- Set environment variables for Node.js (ensure nvm version is used)
+vim.env.PATH = vim.fn.expand('$HOME/.nvm/versions/node/v20.19.3/bin') .. ':' .. vim.env.PATH
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)

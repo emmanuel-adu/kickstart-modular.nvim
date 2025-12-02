@@ -218,9 +218,8 @@ return {
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        tsserver = {}, -- TypeScript language server
+        -- tsserver = {}, -- TypeScript language server (removed in favor of typescript-tools.nvim)
         --
-
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -258,6 +257,7 @@ return {
         'pyright', -- Python language server
         'rust-analyzer', -- Rust language server
         'lua-language-server', -- Lua language server
+        'markdownlint', -- Markdown linter
       }
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -276,6 +276,25 @@ return {
         },
       }
     end,
+  },
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+    config = function()
+      require("typescript-tools").setup {
+        settings = {
+          tsserver_file_preferences = {
+            includeInlayParameterNameHints = "all",
+            includeCompletionsForModuleExports = true,
+          },
+          tsserver_format_options = {
+            allowIncompleteCompletions = true,
+          },
+        },
+      }
+    end,
+    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
   },
 }
 -- vim: ts=2 sts=2 sw=2 et
