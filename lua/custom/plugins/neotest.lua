@@ -1,5 +1,5 @@
 -- Neotest - Modern testing framework for Neovim
--- Requires test frameworks: pytest (Python), go test (Go), jest (JS/TS)
+-- Requires test frameworks: pytest (Python), go test (Go), vitest (JS/TS)
 return {
   'nvim-neotest/neotest',
   dependencies = {
@@ -10,7 +10,7 @@ return {
     -- Language adapters
     'nvim-neotest/neotest-python',
     'nvim-neotest/neotest-go',
-    'nvim-neotest/neotest-jest',
+    'marilari88/neotest-vitest',
   },
   config = function()
     require('neotest').setup {
@@ -26,12 +26,9 @@ return {
           },
           args = { '-v', '-race', '-count=1' },
         },
-        require 'neotest-jest' {
-          jestCommand = 'npm test --',
-          jestConfigFile = 'jest.config.js',
-          env = { CI = true },
-          cwd = function()
-            return vim.fn.getcwd()
+        require 'neotest-vitest' {
+          filter_dir = function(name, rel_path, root)
+            return name ~= 'node_modules'
           end,
         },
       },
