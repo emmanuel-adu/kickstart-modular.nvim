@@ -1,5 +1,4 @@
--- Precognition.nvim - Real-time motion hints for learning Vim
--- Shows available motions as you navigate, teaching you efficient movement
+-- Real-time motion hints that show available Vim motions as you navigate, helping learn efficient movement patterns.
 return {
   'tris203/precognition.nvim',
   event = 'VeryLazy',
@@ -36,8 +35,6 @@ return {
       'telescope',
       'TelescopePrompt',
       'TelescopeResults',
-      'Avante',
-      'AvanteInput',
     },
   },
   config = function(_, opts)

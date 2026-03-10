@@ -1,7 +1,4 @@
--- You can add your own plugins here or in other files in this directory!
---  I promise not to create any merge conflicts in this directory :)
---
--- See the kickstart.nvim README for more information
+-- Floating terminal window that can be toggled and positioned anywhere in the editor.
 return {
   'voldikss/vim-floaterm',
 }

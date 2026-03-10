@@ -1,4 +1,4 @@
--- Lazygit integration - Terminal UI for git
+-- Terminal UI for Git operations - provides an interactive git interface within Neovim.
 -- Requires: lazygit binary installed (brew install lazygit on macOS)
 return {
   'kdheepak/lazygit.nvim',

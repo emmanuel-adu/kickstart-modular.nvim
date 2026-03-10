@@ -72,6 +72,13 @@ return {
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
+          -- Show documentation/hover information (like VS Code hover)
+          --  Press K in normal mode to see documentation for the symbol under cursor
+          map('K', vim.lsp.buf.hover, 'Hover Documentation')
+          
+          -- Show signature help (function parameters) - useful when typing function calls
+          map('<C-k>', vim.lsp.buf.signature_help, 'Signature Help', { 'i', 'n' })
+
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
           map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
@@ -210,7 +217,29 @@ return {
       local servers = {
         clangd = {}, -- C/C++ language server
         gopls = {}, -- Go language server
-        pyright = {}, -- Python language server
+        pyright = {
+          -- Optimize Pyright for better performance and integration
+          settings = {
+            python = {
+              analysis = {
+                -- Use ruff for linting instead of Pyright's built-in linter
+                -- This avoids duplicate diagnostics and improves performance
+                typeCheckingMode = 'basic', -- 'off', 'basic', or 'strict'
+                autoImportCompletions = true,
+                autoSearchPaths = true,
+                diagnosticMode = 'workspace', -- 'openFilesOnly' or 'workspace'
+                -- Exclude patterns to speed up analysis
+                exclude = {
+                  '**/node_modules',
+                  '**/__pycache__',
+                  '**/.*',
+                },
+                -- Stub paths for better type inference
+                stubPath = vim.fn.stdpath('data') .. '/lazy/python-type-stubs',
+              },
+            },
+          },
+        },
         rust_analyzer = {}, -- Rust language server
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --

@@ -1,3 +1,4 @@
+-- GitHub Copilot inline code suggestions and autocompletion.
 -- NOTE: Only enable either copilot-vim or codeium-vim at the same time
 return {
 
@@ -10,6 +11,7 @@ return {
       -- enable copilot for specific filetypes
       vim.g.copilot_filetypes = {
         ['TelescopePrompt'] = false,
+        ['markdown'] = true,
       }
 
       -- Set to true to assume that copilot is already mapped
@@ -25,7 +27,7 @@ return {
       keymap('i', '<C-y>', 'copilot#Accept("\\<CR>")', { expr = true, replace_keycodes = false })
 
       -- Set <C-i> to accept line
-      keymap('i', '<C-i>', '<Plug>(copilot-accept-line)', opts)
+      -- keymap('i', '<C-i>', '<Plug>(copilot-accept-line)', opts)
 
       -- Set <C-j> to next suggestion, <C-k> to previous suggestion, <C-l> to suggest
       keymap('i', '<C-j>', '<Plug>(copilot-next)', opts)

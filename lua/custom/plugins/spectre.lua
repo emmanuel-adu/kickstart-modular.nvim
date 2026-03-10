@@ -1,4 +1,4 @@
--- Spectre - Find and replace across project with preview
+-- Project-wide find and replace with live preview, regex support, and multiple replace engines.
 return {
   'nvim-pack/nvim-spectre',
   dependencies = {

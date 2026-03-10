@@ -1,4 +1,4 @@
--- Trouble.nvim - Pretty diagnostics, references, and quickfix list
+-- Pretty diagnostics, references, and quickfix list viewer with organized display of LSP information.
 return {
   'folke/trouble.nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons' },

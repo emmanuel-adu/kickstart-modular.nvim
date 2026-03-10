@@ -1,4 +1,4 @@
--- Notebook utilities and enhancements
+-- Edit Jupyter notebooks as Python/Markdown files with bidirectional conversion between .ipynb and .py/.md formats.
 return {
   {
     -- Jupytext for editing notebooks as Python files

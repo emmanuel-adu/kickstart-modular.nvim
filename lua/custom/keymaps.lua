@@ -1,0 +1,202 @@
+-- [[ Custom Keymaps Reference ]]
+-- This file documents all custom keymaps across the configuration.
+-- Keymaps are organized by category for easy reference.
+--
+-- Note: Some keymaps are defined in plugin files for better organization.
+-- This file serves as a central reference.
+
+local M = {}
+
+-- Keymap categories:
+-- 1. AI & Copilot
+-- 2. Navigation & Motion
+-- 3. Testing
+-- 4. Git
+-- 5. Notebooks & Jupyter
+-- 6. Diagnostics & LSP
+-- 7. Search & Replace
+-- 8. Learning Tools
+-- 9. Terminal
+
+-- ============================================================================
+-- 1. AI & COPILOT
+-- ============================================================================
+-- Copilot Chat
+--   <leader>ah  - Help actions
+--   <leader>ap  - Prompt actions (normal/visual)
+--   <leader>ae  - Explain code
+--   <leader>at  - Generate tests
+--   <leader>ar  - Review code
+--   <leader>aR  - Refactor code
+--   <leader>an  - Better naming suggestions
+--   <leader>av  - Toggle chat (⚠️ CONFLICT: Also used for Visual chat in visual mode)
+--   <leader>ax  - Inline chat (visual mode)
+--   <leader>ai  - Ask with input
+--   <leader>am  - Generate commit message (all changes)
+--   <leader>aM  - Generate commit message (staged)
+--   <leader>aq  - Quick chat
+--   <leader>ad  - Debug info
+--   <leader>af  - Fix diagnostic
+--   <leader>al  - Clear buffer and history
+--   <leader>a?  - Select models
+--
+-- Copilot.vim (inline suggestions)
+--   <C-y>       - Accept suggestion
+--   <C-j>       - Next suggestion
+--   <C-k>       - Previous suggestion
+--   <C-l>       - Trigger suggestion
+--   <C-d>       - Dismiss suggestion
+
+-- ============================================================================
+-- 2. NAVIGATION & MOTION
+-- ============================================================================
+-- Flash.nvim (enhanced navigation)
+--   s           - Flash jump (normal/visual/operator)
+--   S           - Flash treesitter (select code structures)
+--   r           - Remote flash (operator mode)
+--   R           - Treesitter search (operator/visual)
+--   <C-s>       - Toggle flash search (command mode)
+--
+-- Precognition (motion hints)
+--   <leader>tp  - Toggle precognition hints
+--   <leader>pp  - Peek at available motions
+
+-- ============================================================================
+-- 3. TESTING
+-- ============================================================================
+-- Neotest (pytest for Python)
+--   <leader>tt  - Run nearest test (test under cursor)
+--   <leader>tf  - Run all tests in current file (via neotest)
+--   <leader>tF  - Run current file with verbose output (-vv)
+--   <leader>tr  - Find and run related test file (if current file is not a test)
+--   <leader>tP  - Run pytest directly in terminal (bypasses neotest UI)
+--   <leader>t?  - Debug: Show test discovery help
+--   <leader>td  - Debug nearest test
+--   <leader>ts  - Toggle test summary
+--   <leader>to  - Open test output
+--   <leader>tO  - Toggle output panel
+--   <leader>tS  - Stop running tests
+--   <leader>tw  - Toggle watch mode
+
+-- ============================================================================
+-- 4. GIT
+-- ============================================================================
+-- LazyGit
+--   <leader>gg  - Open LazyGit
+--   <leader>gc  - LazyGit for current file
+--   <leader>gf  - LazyGit filter
+
+-- ============================================================================
+-- 5. NOTEBOOKS & JUPYTER
+-- ============================================================================
+-- Molten.nvim (interactive Jupyter)
+--   <leader>mi  - Initialize kernel
+--   <leader>mI  - Kernel info
+--   <leader>me  - Evaluate line / selection (visual)
+--   <leader>mr  - Re-evaluate cell
+--   <leader>mc  - Evaluate operator
+--   [c          - Previous cell
+--   ]c          - Next cell
+--   <leader>mo  - Show output
+--   <leader>mh  - Hide output
+--   <leader>md  - Delete cell
+--   <leader>mx  - Interrupt kernel
+--   <leader>mX  - Restart kernel
+--   <leader>mq  - Quit kernel
+--   <leader>ms  - Save
+--   <leader>ml  - Load
+--   <leader>mE  - Export output
+
+-- ============================================================================
+-- 6. DIAGNOSTICS & LSP
+-- ============================================================================
+-- Trouble.nvim
+--   <leader>xx  - Toggle diagnostics
+--   <leader>xX  - Toggle buffer diagnostics
+--   <leader>xs  - Toggle symbols
+--   <leader>xl  - Toggle LSP definitions/references
+--   <leader>xL  - Toggle location list
+--   <leader>xq  - Toggle quickfix list
+--
+-- LSP (from kickstart/plugins/lspconfig.lua)
+--   K           - Show hover documentation (like VS Code hover) ⭐
+--   <C-k>       - Show signature help (function parameters) ⭐
+--   grn         - Rename symbol
+--   gra         - Code action
+--   grr         - References
+--   gri         - Implementation
+--   grd         - Definition
+--   grD         - Declaration
+--   gO          - Document symbols
+--   gW          - Workspace symbols
+--   grt         - Type definition
+--   <leader>th  - Toggle inlay hints
+
+-- ============================================================================
+-- 7. SEARCH & REPLACE
+-- ============================================================================
+-- Spectre (project-wide find/replace)
+--   <leader>S   - Toggle Spectre
+--   <leader>sw   - Search current word (normal/visual)
+--   <leader>sp   - Search in current file
+--
+-- Spectre buffer mappings (when Spectre is open):
+--   dd          - Toggle current item
+--   <CR>        - Goto current file
+--   <leader>q   - Send all to quickfix
+--   <leader>c   - Input replace vim command
+--   <leader>o   - Show options
+--   <leader>rc  - Replace current line
+--   <leader>R   - Replace all
+--   <leader>v   - Change result view mode
+--   trs         - Use sed to replace
+--   tro         - Use oxi to replace
+--   tu          - Toggle live update
+--   ti          - Toggle ignore case
+--   th          - Toggle search hidden
+--   <leader>l   - Resume last search
+
+-- ============================================================================
+-- 8. LEARNING TOOLS
+-- ============================================================================
+-- Hardtime (break bad habits)
+--   <leader>th  - Toggle hardtime
+--   <leader>hr  - Hardtime report
+
+-- ============================================================================
+-- 9. TERMINAL
+-- ============================================================================
+-- vim-floaterm
+--   (No custom keymaps - uses default floaterm mappings)
+
+-- ============================================================================
+-- DISCOVERY & HELP (like VS Code's Cmd+P)
+-- ============================================================================
+-- Which-Key (automatic)
+--   <leader>    - Press and hold to see all available commands with descriptions
+--                 (This is your main discovery tool - just press <leader> and wait!)
+--
+-- Telescope (command search)
+--   <leader>sc  - Search commands (like VS Code Cmd+P) ⭐ BEST FOR FINDING COMMANDS
+--   <leader>sk  - Search keymaps (find what key does what)
+--   <leader>sh  - Search help tags
+--   <leader>ss  - Search Telescope pickers (meta-search)
+--
+-- Built-in Help
+--   :help <topic> - Search Neovim help (e.g., :help lazygit, :help telescope)
+
+-- ============================================================================
+-- GENERAL KEYMAPS (from keymaps.lua)
+-- ============================================================================
+--   <Esc>       - Clear search highlights (normal mode)
+--   <leader>q   - Open diagnostic quickfix list
+--   <Esc><Esc>  - Exit terminal mode
+--   <C-h/j/k/l> - Navigate between windows
+
+-- ============================================================================
+-- KEYMAP CONFLICTS
+-- ============================================================================
+-- ⚠️  <leader>av - Used by Copilot Chat for both Toggle (normal) and Visual (visual)
+--                  Mode-specific, so no actual conflict
+
+return M

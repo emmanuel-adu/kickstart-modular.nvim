@@ -1,3 +1,4 @@
+-- GitHub Copilot Chat integration with pre-configured prompts for code explanation, refactoring, and test generation.
 local IS_DEV = false
 
 local prompts = {

@@ -44,8 +44,6 @@ return {
       'TelescopeResults',
       'help',
       'startify',
-      'Avante',
-      'AvanteInput',
     },
 
     -- Suggest better motions
