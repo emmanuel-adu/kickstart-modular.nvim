@@ -6,26 +6,12 @@ This directory contains custom plugins and configurations that extend the base k
 
 This configuration is built on top of [kickstart-modular.nvim](https://github.com/dam9000/kickstart-modular.nvim), providing a solid foundation with additional plugins tailored for:
 
-- **AI-assisted development** (Copilot)
 - **Data science workflows** (Jupyter notebooks, Molten)
 - **Testing** (Neotest)
 - **Enhanced navigation** (Flash, Precognition)
 - **Learning tools** (Hardtime, Precognition)
 
 ## Plugin Categories
-
-### 🤖 AI & Copilot
-
-#### Copilot Chat
-GitHub Copilot chat integration with pre-configured prompts.
-
-- **Keymaps**: `<leader>a*` prefix for various actions
-- **Features**: Code explanation, refactoring, test generation, commit messages
-
-#### Copilot.vim
-GitHub Copilot inline code suggestions.
-
-- **Keymaps**: `<C-y>` accept, `<C-j/k>` navigate, `<C-d>` dismiss
 
 ### 📊 Notebooks & Data Science
 
@@ -165,11 +151,6 @@ All custom plugins are in `lua/custom/plugins/`. To add a new plugin:
 - Verify Python dependencies: `pip install jupyter ipython pynvim`
 - Check kernel initialization: `<leader>mi`
 - Review output: `<leader>mo`
-
-### Copilot not suggesting
-- Verify GitHub Copilot subscription
-- Check filetype is enabled in `copilot-vim.lua`
-- Try `<C-l>` to manually trigger suggestions
 
 ### LSP not starting
 - Run `:Mason` to install language servers

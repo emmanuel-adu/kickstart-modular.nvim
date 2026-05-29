@@ -8,7 +8,7 @@
 local M = {}
 
 -- Keymap categories:
--- 1. AI & Copilot
+-- 1. AI & Copilot (uninstalled)
 -- 2. Navigation & Motion
 -- 3. Testing
 -- 4. Git
@@ -19,37 +19,20 @@ local M = {}
 -- 9. Terminal
 
 -- ============================================================================
--- 1. AI & COPILOT
+-- 1. AI & COPILOT (uninstalled)
 -- ============================================================================
--- Copilot Chat
---   <leader>ah  - Help actions
---   <leader>ap  - Prompt actions (normal/visual)
---   <leader>ae  - Explain code
---   <leader>at  - Generate tests
---   <leader>ar  - Review code
---   <leader>aR  - Refactor code
---   <leader>an  - Better naming suggestions
---   <leader>av  - Toggle chat (⚠️ CONFLICT: Also used for Visual chat in visual mode)
---   <leader>ax  - Inline chat (visual mode)
---   <leader>ai  - Ask with input
---   <leader>am  - Generate commit message (all changes)
---   <leader>aM  - Generate commit message (staged)
---   <leader>aq  - Quick chat
---   <leader>ad  - Debug info
---   <leader>af  - Fix diagnostic
---   <leader>al  - Clear buffer and history
---   <leader>a?  - Select models
---
--- Copilot.vim (inline suggestions)
---   <C-y>       - Accept suggestion
---   <C-j>       - Next suggestion
---   <C-k>       - Previous suggestion
---   <C-l>       - Trigger suggestion
---   <C-d>       - Dismiss suggestion
+-- (Copilot keymaps removed)
 
 -- ============================================================================
 -- 2. NAVIGATION & MOTION
 -- ============================================================================
+-- Bufferline
+--   <S-h>       - Previous buffer
+--   <S-l>       - Next buffer
+--   <leader>bp  - Pin/unpin buffer
+--   <leader>bP  - Close all unpinned buffers
+--   <leader>bd  - Delete current buffer
+--
 -- Flash.nvim (enhanced navigation)
 --   s           - Flash jump (normal/visual/operator)
 --   S           - Flash treesitter (select code structures)
@@ -166,8 +149,12 @@ local M = {}
 -- ============================================================================
 -- 9. TERMINAL
 -- ============================================================================
--- vim-floaterm
---   (No custom keymaps - uses default floaterm mappings)
+-- toggleterm.nvim
+--   <C-\>       - Toggle floating terminal (normal/insert/terminal mode)
+--   <leader>t1  - Toggle terminal 1
+--   <leader>t2  - Toggle terminal 2
+--   <leader>t3  - Toggle terminal 3
+--   <leader>ts  - Send visual selection to terminal (visual mode, e.g. Python REPL)
 
 -- ============================================================================
 -- DISCOVERY & HELP (like VS Code's Cmd+P)
@@ -196,7 +183,6 @@ local M = {}
 -- ============================================================================
 -- KEYMAP CONFLICTS
 -- ============================================================================
--- ⚠️  <leader>av - Used by Copilot Chat for both Toggle (normal) and Visual (visual)
---                  Mode-specific, so no actual conflict
+-- (Copilot removed)
 
 return M

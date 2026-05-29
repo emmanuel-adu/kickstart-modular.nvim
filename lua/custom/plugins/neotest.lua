@@ -13,6 +13,16 @@ return {
     'marilari88/neotest-vitest',
   },
   config = function()
+    local uv = vim.uv or vim.loop
+    local function first_existing(paths)
+      for _, p in ipairs(paths) do
+        if p and p ~= '' and uv.fs_stat(p) then
+          return p
+        end
+      end
+      return nil
+    end
+
     require('neotest').setup {
       adapters = {
         require 'neotest-python' {
@@ -20,10 +30,20 @@ return {
           -- Pytest arguments (can be overridden per-run)
           args = { '-v' }, -- Verbose output, remove DEBUG logs for cleaner output
           runner = 'pytest',
-          -- Python executable (uses system python by default)
-          -- python = '/usr/bin/python3',
+          -- Prefer project virtualenv if present; fall back to PATH python.
+          python = function()
+            local cwd = vim.fn.getcwd()
+            return first_existing {
+              cwd .. '/.venv/bin/python',
+              cwd .. '/venv/bin/python',
+              vim.fn.exepath 'python3',
+              vim.fn.exepath 'python',
+            }
+          end,
           -- Find pytest.ini, pyproject.toml, setup.cfg, or tox.ini in project root
-          pytest_discover_nearest = true,
+          -- NOTE: Valid option is `pytest_discover_instances` (for parametrized tests).
+          -- It shells out to pytest during discovery, so it can be slower.
+          pytest_discover_instances = false,
           -- Use pytest's default test discovery patterns
           -- This helps find tests even if they're not in standard locations
         },
@@ -99,7 +119,7 @@ return {
     
     -- Run all tests in current file (pytest file.py)
     vim.keymap.set('n', '<leader>tf', function()
-      local file = vim.fn.expand '%'
+      local file = vim.fn.expand '%:p'
       if file == '' then
         vim.notify('No file to run', vim.log.levels.ERROR)
         return
@@ -122,7 +142,8 @@ return {
       
       -- Run with explicit file path and ensure pytest can find it
       local ok, err = pcall(function()
-        neotest.run.run(file, {
+        neotest.run.run({
+          file,
           extra_args = { '--tb=short' }, -- Shorter traceback format
         })
       end)
@@ -139,7 +160,7 @@ return {
     
     -- Run current file with verbose output
     vim.keymap.set('n', '<leader>tF', function()
-      local file = vim.fn.expand '%'
+      local file = vim.fn.expand '%:p'
       if file == '' then
         vim.notify('No file to run', vim.log.levels.ERROR)
         return
@@ -154,7 +175,7 @@ return {
       end
       
       local ok, err = pcall(function()
-        neotest.run.run(file, { extra_args = { '-vv' } })
+        neotest.run.run({ file, extra_args = { '-vv' } })
       end)
       
       if not ok then
@@ -164,20 +185,19 @@ return {
     
     -- Run pytest directly in terminal (bypasses neotest UI)
     vim.keymap.set('n', '<leader>tP', function()
-      local file = vim.fn.expand '%'
+      local file = vim.fn.expand '%:p'
       if file == '' then
         vim.notify('No file to run', vim.log.levels.ERROR)
         return
       end
-      -- Change to file's directory to ensure pytest can find tests
       local dir = vim.fn.fnamemodify(file, ':h')
-      vim.cmd('cd ' .. vim.fn.fnameescape(dir))
-      vim.cmd('terminal pytest ' .. vim.fn.shellescape(file) .. ' -v')
+      local cmd = 'cd ' .. vim.fn.shellescape(dir) .. ' && pytest ' .. vim.fn.shellescape(file) .. ' -v'
+      require('toggleterm.terminal').Terminal:new({ cmd = cmd, close_on_exit = false }):toggle()
     end, { desc = '[T]est [P]ytest Direct (terminal)' })
     
     -- Debug: Show test discovery help
     vim.keymap.set('n', '<leader>t?', function()
-      local file = vim.fn.expand '%'
+      local file = vim.fn.expand '%:p'
       local filename = file ~= '' and vim.fn.fnamemodify(file, ':t') or 'No file'
       local is_test_file = filename:match('^test_.*%.py$') or filename:match('.*_test%.py$')
       
@@ -242,7 +262,7 @@ return {
     
     -- Find and run related test file (if current file is not a test file)
     vim.keymap.set('n', '<leader>tr', function()
-      local file = vim.fn.expand '%'
+      local file = vim.fn.expand '%:p'
       if file == '' then
         vim.notify('No file open', vim.log.levels.ERROR)
         return
@@ -279,7 +299,7 @@ return {
       if found_test then
         vim.notify('Found test file: ' .. vim.fn.fnamemodify(found_test, ':t'), vim.log.levels.INFO)
         local ok, err = pcall(function()
-          neotest.run.run(found_test, { extra_args = { '--tb=short' } })
+          neotest.run.run({ found_test, extra_args = { '--tb=short' } })
         end)
         if not ok then
           vim.notify('Error: ' .. tostring(err), vim.log.levels.ERROR)

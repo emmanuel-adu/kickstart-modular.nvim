@@ -295,7 +295,9 @@ return {
 
       require('mason-lspconfig').setup {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = false,
+        -- stylua is a formatter (via conform.nvim), not an LSP server.
+        -- Exclude it so mason-lspconfig doesn't call vim.lsp.enable('stylua') → stylua --lsp.
+        automatic_enable = { exclude = { 'stylua' } },
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
