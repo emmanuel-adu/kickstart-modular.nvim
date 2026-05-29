@@ -1,17 +1,7 @@
 -- LSP Plugins
+---@module 'lazy'
+---@type LazySpec
 return {
-  {
-    -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-    -- used for completion, annotations and signatures of Neovim apis
-    'folke/lazydev.nvim',
-    ft = 'lua',
-    opts = {
-      library = {
-        -- Load luvit types when the `vim.uv` word is found
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-      },
-    },
-  },
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
@@ -19,7 +9,14 @@ return {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-      { 'mason-org/mason.nvim', opts = {} },
+      {
+        'mason-org/mason.nvim',
+        ---@module 'mason.settings'
+        ---@type MasonSettings
+        ---@diagnostic disable-next-line: missing-fields
+        opts = {},
+      },
+      -- Maps LSP server names between nvim-lspconfig and Mason package names.
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
@@ -87,47 +84,9 @@ return {
           -- or a suggestion from your LSP for this to activate.
           map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
-          -- Find references for the word under your cursor.
-          map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-
-          -- Jump to the implementation of the word under your cursor.
-          --  Useful when your language has ways of declaring types without an actual implementation.
-          map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-
-          -- Jump to the definition of the word under your cursor.
-          --  This is where a variable was first declared, or where a function is defined, etc.
-          --  To jump back, press <C-t>.
-          map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
           map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-
-          -- Fuzzy find all the symbols in your current document.
-          --  Symbols are things like variables, functions, types, etc.
-          map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
-
-          -- Fuzzy find all the symbols in your current workspace.
-          --  Similar to document symbols, except searches over your entire project.
-          map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
-
-          -- Jump to the type of the word under your cursor.
-          --  Useful when you're not sure what type a variable is and you want to see
-          --  the definition of its *type*, not where it was *defined*.
-          map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
-
-          -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
-          ---@param client vim.lsp.Client
-          ---@param method vim.lsp.protocol.Method
-          ---@param bufnr? integer some lsp support methods only in specific files
-          ---@return boolean
-          local function client_supports_method(client, method, bufnr)
-            if vim.fn.has 'nvim-0.11' == 1 then
-              return client:supports_method(method, bufnr)
-            else
-              return client.supports_method(method, { bufnr = bufnr })
-            end
-          end
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
@@ -135,7 +94,7 @@ return {
           --
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
+          if client and client:supports_method('textDocument/documentHighlight', event.buf) then
             local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
@@ -162,10 +121,8 @@ return {
           -- code, if the language server you are using supports them
           --
           -- This may be unwanted, since they displace some of your code
-          if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-            map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, '[T]oggle Inlay [H]ints')
+          if client and client:supports_method('textDocument/inlayHint', event.buf) then
+            map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
           end
         end,
       })
@@ -199,57 +156,43 @@ return {
         },
       }
 
-      -- LSP servers and clients are able to communicate to each other what features they support.
-      --  By default, Neovim doesn't support everything that is in the LSP specification.
-      --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-      --  So, we create new capabilities with nvim-cmp, and then broadcast that to the servers.
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-      --
-      --  Add any additional override configuration in the following tables. Available keys are:
-      --  - cmd (table): Override the default command used to start the server
-      --  - filetypes (table): Override the default list of associated filetypes for the server
-      --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-      --  - settings (table): Override the default settings passed when initializing the server.
-      --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+      --  See `:help lsp-config` for information about keys and how to configure
+      ---@type table<string, vim.lsp.Config>
       local servers = {
-        clangd = {}, -- C/C++ language server
-        gopls = {}, -- Go language server
+        clangd = {},
+        gopls = {},
         pyright = {
-          -- Optimize Pyright for better performance and integration
           settings = {
             python = {
               analysis = {
-                -- Use ruff for linting instead of Pyright's built-in linter
-                -- This avoids duplicate diagnostics and improves performance
-                typeCheckingMode = 'basic', -- 'off', 'basic', or 'strict'
+                typeCheckingMode = 'basic',
                 autoImportCompletions = true,
                 autoSearchPaths = true,
-                diagnosticMode = 'workspace', -- 'openFilesOnly' or 'workspace'
-                -- Exclude patterns to speed up analysis
+                diagnosticMode = 'workspace',
                 exclude = {
                   '**/node_modules',
                   '**/__pycache__',
                   '**/.*',
                 },
-                -- Stub paths for better type inference
                 stubPath = vim.fn.stdpath('data') .. '/lazy/python-type-stubs',
               },
             },
           },
         },
-        rust_analyzer = {}, -- Rust language server
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
+        rust_analyzer = {},
         -- Note: TypeScript uses typescript-tools.nvim plugin (configured below) instead of tsserver
         lua_ls = {
+          on_init = function(client)
+            -- Disable lua_ls formatting — stylua handles it via conform.nvim
+            client.server_capabilities.documentFormattingProvider = false
+          end,
           settings = {
             Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
+              completion = { callSnippet = 'Replace' },
+              format = { enable = false },
             },
           },
         },
@@ -262,48 +205,39 @@ return {
       --    :Mason
       --
       -- You can press `g?` for help in this menu.
-      --
-      -- `mason` had to be setup earlier: to configure its options see the
-      -- `dependencies` table for `nvim-lspconfig` above.
-      --
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
       local ensure_installed = {
         -- Language servers
-        'typescript-language-server', -- TypeScript language server
-        'clangd', -- C/C++ language server
-        'gopls', -- Go language server
-        'pyright', -- Python language server
-        'rust-analyzer', -- Rust language server
-        'lua-language-server', -- Lua language server
+        'typescript-language-server',
+        'clangd',
+        'gopls',
+        'pyright',
+        'rust-analyzer',
+        'lua-language-server',
         -- Formatters
-        'stylua', -- Lua formatter
-        'black', -- Python formatter
-        'isort', -- Python import formatter
-        'prettier', -- JS/TS/JSON/YAML/Markdown formatter
-        'goimports', -- Go import formatter
-        'rustfmt', -- Rust formatter
+        'stylua',
+        'black',
+        'isort',
+        'prettier',
+        'goimports',
+        'rustfmt',
         -- Linters
-        'markdownlint', -- Markdown linter
-        'ruff', -- Python linter
-        'mypy', -- Python type checker
-        'golangci-lint', -- Go linter
-        'eslint', -- JS/TS linter
-        'shellcheck', -- Shell script linter
+        'markdownlint',
+        'ruff',
+        'mypy',
+        'golangci-lint',
+        'eslint',
+        'shellcheck',
       }
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        ensure_installed = {},
         -- stylua is a formatter (via conform.nvim), not an LSP server.
         -- Exclude it so mason-lspconfig doesn't call vim.lsp.enable('stylua') → stylua --lsp.
         automatic_enable = { exclude = { 'stylua' } },
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
