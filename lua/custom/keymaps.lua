@@ -68,6 +68,9 @@ local M = {}
 --   <leader>gg  - Open LazyGit
 --   <leader>gc  - LazyGit for current file
 --   <leader>gf  - LazyGit filter
+--
+-- Neo-tree
+--   <leader>gs  - Git status view (changed files only)
 
 -- ============================================================================
 -- 5. NOTEBOOKS & JUPYTER

@@ -223,7 +223,6 @@ return {
         -- Linters
         'markdownlint',
         'ruff',
-        'mypy',
         'golangci-lint',
         'eslint',
         'shellcheck',
