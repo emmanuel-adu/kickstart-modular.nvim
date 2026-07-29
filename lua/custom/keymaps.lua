@@ -64,10 +64,8 @@ local M = {}
 -- ============================================================================
 -- 4. GIT
 -- ============================================================================
--- LazyGit
---   <leader>gg  - Open LazyGit
---   <leader>gc  - LazyGit for current file
---   <leader>gf  - LazyGit filter
+-- Neogit
+--   <leader>gg  - Open Neogit (status, commit, log, branches)
 --
 -- Neo-tree
 --   <leader>gs  - Git status view (changed files only)
@@ -173,7 +171,7 @@ local M = {}
 --   <leader>ss  - Search Telescope pickers (meta-search)
 --
 -- Built-in Help
---   :help <topic> - Search Neovim help (e.g., :help lazygit, :help telescope)
+--   :help <topic> - Search Neovim help (e.g., :help neogit, :help telescope)
 
 -- ============================================================================
 -- GENERAL KEYMAPS (from keymaps.lua)

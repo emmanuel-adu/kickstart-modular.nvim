@@ -86,11 +86,11 @@ Break bad Vim habits by gently blocking repetitive motions.
 
 ### 🔧 Git
 
-#### LazyGit.nvim
-Terminal UI for Git operations.
+#### Neogit
+Full Git UI (status, commit, log, branches) inside Neovim, with Diffview for diffs.
 
-- **Keymaps**: `<leader>gg` open, `<leader>gc` current file
-- **Requirements**: `lazygit` binary installed
+- **Keymaps**: `<leader>gg` open
+- **Requirements**: `plenary.nvim`, `diffview.nvim` (installed automatically as dependencies)
 
 ## Keymap Reference
 
@@ -126,7 +126,6 @@ Quick reference:
 - **Node.js**: `npm` (for TypeScript/JavaScript)
 
 ### Optional
-- **LazyGit**: For Git UI (`brew install lazygit` on macOS)
 - **Image rendering**: `cairosvg`, `plotly`, `kaleido` (for Molten image output)
 
 ## Tips
