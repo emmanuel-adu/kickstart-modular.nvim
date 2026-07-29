@@ -23,8 +23,36 @@ vim.diagnostic.config {
 
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+vim.keymap.set('n', '<leader>ud', function()
+  local enabled = vim.diagnostic.is_enabled()
+  vim.diagnostic.enable(not enabled)
+  vim.notify('Diagnostics ' .. (enabled and 'disabled' or 'enabled'))
+end, { desc = '[U]I Toggle [D]iagnostics' })
+
+-- Disable diagnostics in markdown files (too noisy for prose)
+vim.api.nvim_create_autocmd('FileType', {
+  desc = 'Disable diagnostics in markdown files',
+  group = vim.api.nvim_create_augroup('kickstart-markdown-no-diagnostics', { clear = true }),
+  pattern = 'markdown',
+  callback = function(event) vim.diagnostic.enable(false, { bufnr = event.buf }) end,
+})
+
 -- Neo-tree git status view
 vim.keymap.set('n', '<leader>gs', '<cmd>Neotree git_status<CR>', { desc = '[G]it [S]tatus (Neo-tree)' })
+
+-- Save
+vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', { desc = '[W]rite (save) file' })
+vim.keymap.set('n', '<leader>W', '<cmd>wall<CR>', { desc = '[W]rite (save) all files' })
+
+-- Quickfix navigation
+vim.keymap.set('n', ']q', '<cmd>cnext<CR>', { desc = 'Next quickfix item' })
+vim.keymap.set('n', '[q', '<cmd>cprev<CR>', { desc = 'Previous quickfix item' })
+
+-- Move lines up/down
+vim.keymap.set('n', '<A-j>', '<cmd>m .+1<CR>==', { desc = 'Move line down' })
+vim.keymap.set('n', '<A-k>', '<cmd>m .-2<CR>==', { desc = 'Move line up' })
+vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", { desc = 'Move selection down' })
+vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which

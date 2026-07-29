@@ -13,7 +13,19 @@ return {
   },
   lazy = false,
   keys = {
-    { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
+    {
+      '\\',
+      function()
+        local ok, lib = pcall(require, 'diffview.lib')
+        if ok and lib.get_current_view() then
+          vim.cmd 'DiffviewToggleFiles'
+        else
+          vim.cmd 'Neotree reveal'
+        end
+      end,
+      desc = 'NeoTree reveal (or toggle Diffview files panel)',
+      silent = true,
+    },
   },
   ---@module 'neo-tree'
   ---@type neotree.Config

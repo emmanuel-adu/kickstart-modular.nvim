@@ -2,6 +2,7 @@
 -- Jump anywhere on screen with 2-3 keystrokes using visual labels
 return {
   'folke/flash.nvim',
+  enabled = false,
   event = 'VeryLazy',
   opts = {
     -- Label configuration

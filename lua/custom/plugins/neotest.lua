@@ -2,6 +2,7 @@
 -- Requires test frameworks: pytest (Python), go test (Go), vitest (JS/TS)
 return {
   'nvim-neotest/neotest',
+  enabled = false,
   dependencies = {
     'nvim-neotest/nvim-nio',
     'nvim-lua/plenary.nvim',

@@ -1,6 +1,7 @@
 -- Project-wide find and replace with live preview, regex support, and multiple replace engines.
 return {
   'nvim-pack/nvim-spectre',
+  enabled = false,
   dependencies = {
     'nvim-lua/plenary.nvim',
   },

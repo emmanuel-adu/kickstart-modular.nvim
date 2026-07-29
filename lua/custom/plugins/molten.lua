@@ -4,6 +4,7 @@
 return {
   {
     'benlubas/molten-nvim',
+    enabled = false,
     version = '^1.0.0',
     dependencies = { '3rd/image.nvim' },
     build = ':UpdateRemotePlugins',
@@ -60,6 +61,7 @@ return {
   },
   {
     '3rd/image.nvim',
+    enabled = false,
     opts = {
       backend = 'kitty', -- Works with Kitty, Ghostty, WezTerm (Kitty graphics protocol)
       integrations = {
@@ -98,6 +100,7 @@ return {
   {
     -- Quarto support (optional - for .qmd files)
     'quarto-dev/quarto-nvim',
+    enabled = false,
     ft = { 'quarto', 'markdown' },
     dev = false,
     opts = {

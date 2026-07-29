@@ -1,6 +1,7 @@
 -- Real-time motion hints that show available Vim motions as you navigate, helping learn efficient movement patterns.
 return {
   'tris203/precognition.nvim',
+  enabled = false,
   event = 'VeryLazy',
   opts = {
     startVisible = true, -- Show hints immediately
