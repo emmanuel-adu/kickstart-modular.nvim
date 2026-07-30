@@ -3,10 +3,13 @@
 return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    -- Pinned to the classic `master` branch (configs-based setup below).
+    -- Upstream's `main` branch is a from-scratch API rewrite we haven't adopted.
+    branch = 'master',
     lazy = false,
     build = ':TSUpdate',
     dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
+      { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'master' },
     },
     main = 'nvim-treesitter.configs',
     opts = {
