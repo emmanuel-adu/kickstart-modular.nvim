@@ -1,6 +1,7 @@
 -- Toggleterm - persistent, named terminals with REPL support
 return {
   'akinsho/toggleterm.nvim',
+  enabled = false,
   version = '*',
   event = 'VeryLazy',
   opts = {
